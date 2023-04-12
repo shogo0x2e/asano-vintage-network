@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -15,7 +15,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
-export default function TemporaryDrawer() {
+export default function SwipeableTemporaryDrawer() {
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -27,6 +27,7 @@ export default function TemporaryDrawer() {
     (anchor: Anchor, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
+        event &&
         event.type === 'keydown' &&
         ((event as React.KeyboardEvent).key === 'Tab' ||
           (event as React.KeyboardEvent).key === 'Shift')
@@ -73,24 +74,23 @@ export default function TemporaryDrawer() {
   );
 
   return (
-    <div>
-      <IconButton
-        size="large"
-        edge="start"
-        color="inherit"
-        aria-label="open drawer"
-        onClick={toggleDrawer('left', true)}
-        sx={{ mr: 2 }}
+    <IconButton
+      size="large"
+      edge="start"
+      color="inherit"
+      aria-label="open drawer"
+      onClick={toggleDrawer('left', true)}
+      sx={{ mr: 2 }}
+    >
+      <MenuIcon />
+      <SwipeableDrawer
+        anchor={'left'}
+        open={state['left']}
+        onClose={toggleDrawer('left', false)}
+        onOpen={toggleDrawer('left', true)}
       >
-        <MenuIcon />
-        <Drawer
-          anchor={'left'}
-          open={state['left']}
-          onClose={toggleDrawer('left', false)}
-        >
-          {list('left')}
-        </Drawer>
-      </IconButton>
-    </div>
+        {list('left')}
+      </SwipeableDrawer>
+    </IconButton>
   );
 }
